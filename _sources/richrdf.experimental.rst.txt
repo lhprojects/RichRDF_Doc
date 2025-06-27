@@ -1,0 +1,29 @@
+richrdf.experimental package
+============================
+
+Submodules
+----------
+
+richrdf.experimental.generate\_cpp\_config\_json module
+-------------------------------------------------------
+
+.. automodule:: richrdf.experimental.generate_cpp_config_json
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+richrdf.experimental.setupROOT module
+-------------------------------------
+
+.. automodule:: richrdf.experimental.setupROOT
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: richrdf.experimental
+   :members:
+   :show-inheritance:
+   :undoc-members:

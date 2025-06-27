@@ -1,0 +1,179 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>richrdf.experimental package &mdash; RichRDF  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            RichRDF
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">richrdf.experimental package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-richrdf.experimental.generate_cpp_config_json">richrdf.experimental.generate_cpp_config_json module</a></li>
+<li><a class="reference internal" href="#module-richrdf.experimental.setupROOT">richrdf.experimental.setupROOT module</a><ul>
+<li><a class="reference internal" href="#richrdf.experimental.setupROOT.setupROOT"><code class="docutils literal notranslate"><span class="pre">setupROOT()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-richrdf.experimental">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">RichRDF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">richrdf.experimental package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/richrdf.experimental.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="richrdf-experimental-package">
+<h1>richrdf.experimental package<a class="headerlink" href="#richrdf-experimental-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-richrdf.experimental.generate_cpp_config_json">
+<span id="richrdf-experimental-generate-cpp-config-json-module"></span><h2>richrdf.experimental.generate_cpp_config_json module<a class="headerlink" href="#module-richrdf.experimental.generate_cpp_config_json" title="Link to this heading"></a></h2>
+<p>Generate a <cite>.vscode/c_cpp_properties.json</cite> configuration file for C++ IntelliSense in VSCode.</p>
+<p>This utility simplifies setting up Visual Studio Code for C++ development by generating
+a <cite>c_cpp_properties.json</cite> file using the specified Key4HEP CVMFS toolchain version.</p>
+<p>IntelliSense in VSCode relies on this JSON file to properly locate system headers,
+toolchain includes, and C++ standard configuration.</p>
+<p>Usage (after package installation):
+Run the module from the command line:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">richrdf</span><span class="o">.</span><span class="n">experimental</span><span class="o">.</span><span class="n">generate_cpp_config_json</span> <span class="o">&lt;</span><span class="n">cvmfsversion</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>Alternatively, if the package is not installed, you can execute the script directly:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">python</span> <span class="n">richrdf</span><span class="o">/</span><span class="n">experimental</span><span class="o">/</span><span class="n">generate_cpp_config_json</span><span class="o">.</span><span class="n">py</span> <span class="o">&lt;</span><span class="n">cvmfsversion</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">param &lt;cvmfsversion&gt;<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Key4HEP CVMFS toolchain version. Example:
+<cite>“2024-10-03/x86_64-almalinux9-gcc14.2.0-opt”</cite></p>
+</dd>
+<dt class="field-even">type &lt;cvmfsversion&gt;<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If the specified output file already exists, the function skips overwriting.</p></li>
+<li><p>If the file doesn’t take effect, try moving it manually to the root of your workspace.</p></li>
+</ul>
+</section>
+<section id="module-richrdf.experimental.setupROOT">
+<span id="richrdf-experimental-setuproot-module"></span><h2>richrdf.experimental.setupROOT module<a class="headerlink" href="#module-richrdf.experimental.setupROOT" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="richrdf.experimental.setupROOT.setupROOT">
+<span class="sig-prename descclassname"><span class="pre">richrdf.experimental.setupROOT.</span></span><span class="sig-name descname"><span class="pre">setupROOT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cvmfsversion</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#richrdf.experimental.setupROOT.setupROOT" title="Link to this definition"></a></dt>
+<dd><p>Configure ROOT and environment paths based on a given Key4HEP CVMFS version.</p>
+<p>This function sets up the necessary <cite>LD_LIBRARY_PATH</cite>, Python import paths,
+and ROOT include paths for working with <cite>edm4hep</cite> and <cite>podio</cite> using the CVMFS-based
+Key4HEP stack. It dynamically locates shared libraries and includes, loads required
+ROOT libraries, and modifies the runtime environment accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cvmfsversion</strong> (<em>str</em>) – The Key4HEP release version or full path. Example:
+- “2024-10-03/x86_64-almalinux9-gcc14.2.0-opt”
+- “/cvmfs/sw.hsf.org/key4hep/releases/2024-10-03/x86_64-almalinux9-gcc14.2.0-opt”</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>This function assumes that CVMFS is mounted and accessible at <cite>/cvmfs</cite>.</p></li>
+</ul>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">setupROOT</span><span class="p">(</span><span class="s2">&quot;2024-10-03/x86_64-almalinux9-gcc14.2.0-opt&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">ROOT</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-richrdf.experimental">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-richrdf.experimental" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Harry LIANG.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

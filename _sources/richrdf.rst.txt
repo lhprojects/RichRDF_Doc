@@ -1,0 +1,30 @@
+richrdf package
+===============
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   richrdf.experimental
+
+Submodules
+----------
+
+richrdf.include module
+----------------------
+
+.. automodule:: richrdf.include
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: richrdf
+   :imported-members:
+   :members:
+   :show-inheritance:
+   :undoc-members:
