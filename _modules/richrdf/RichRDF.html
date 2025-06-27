@@ -1,0 +1,730 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>richrdf.RichRDF &mdash; RichRDF  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RichRDF
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RichRDF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../richrdf.html">richrdf</a></li>
+      <li class="breadcrumb-item active">richrdf.RichRDF</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for richrdf.RichRDF</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="kn">import</span> <span class="n">MethodType</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.ReadEvent</span><span class="w"> </span><span class="kn">import</span> <span class="n">_ReadEvent</span><span class="p">,</span> <span class="n">init_Metadata</span><span class="p">,</span> <span class="n">PODIO_Metadata</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.Evaluate</span><span class="w"> </span><span class="kn">import</span> <span class="n">_Evaluate</span><span class="p">,</span> <span class="n">init_EvaluateInfo</span><span class="p">,</span> \
+        <span class="n">call_handler</span><span class="p">,</span> <span class="n">get_callsite_info</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">.LazyAsNumpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">_LazyAsNumpy</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">CallableProxy</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;.. sphinx-hide::&quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxied</span><span class="p">,</span> <span class="n">post</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_proxied</span> <span class="o">=</span> <span class="n">proxied</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post</span> <span class="o">=</span> <span class="n">post</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_proxied</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    
+<span class="k">class</span><span class="w"> </span><span class="nc">TemplateProxyProxy</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">proxied</span><span class="p">,</span> <span class="n">post</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_proxied</span> <span class="o">=</span> <span class="n">proxied</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">post</span> <span class="o">=</span> <span class="n">post</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">CallableProxy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_proxied</span><span class="p">[</span><span class="n">item</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">post</span><span class="p">)</span>
+
+    
+<div class="viewcode-block" id="RRDF">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RRDF</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A wrapper class around an RDataFrame backend providing a fluent Python interface.</span>
+
+<span class="sd">    The `RRDF` class is the core abstraction returned by `RichRDF`. It mimics the ROOT RDataFrame</span>
+<span class="sd">    interface while adding evaluation context handling and convenient utility methods. Methods such as</span>
+<span class="sd">    `Define`, `Filter`, `Aggregate`, `Evaluate`, and `AsNumpy` allow chaining and lazy/instant actions.</span>
+
+<span class="sd">    This wrapper tracks evaluation context, and metadata.</span>
+<span class="sd">    when passed a parent RRDF object, enabling rich evaluation features and metadata-aware operations.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        &gt;&gt;&gt; df = RichRDF(&quot;events.root&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; df = df.Define(&quot;x&quot;, &quot;x + 1&quot;).Filter(&quot;x &gt; 5&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; df.Display(&quot;x&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">backend</span><span class="p">,</span> <span class="n">context_holder</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span> <span class="o">=</span> <span class="n">backend</span>
+        <span class="k">if</span> <span class="n">context_holder</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">context_holder</span><span class="p">,</span> <span class="s2">&quot;_eval_context&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_eval_context</span> <span class="o">=</span> <span class="n">context_holder</span><span class="o">.</span><span class="n">_eval_context</span>
+
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">context_holder</span><span class="p">,</span> <span class="s2">&quot;_podio_metadata&quot;</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_podio_metadata</span> <span class="o">=</span> <span class="n">context_holder</span><span class="o">.</span><span class="n">_podio_metadata</span>
+
+<div class="viewcode-block" id="RRDF.getBackend">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.getBackend">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getBackend</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the underlying backend used by this RRDF instance.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Any</span>
+<span class="sd">            The internal backend object (typically an RDataFrame or similar).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.getMetadata">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.getMetadata">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getMetadata</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="n">PODIO_Metadata</span><span class="o">|</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve PODIO metadata if available.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        PODIO_Metadata or None</span>
+<span class="sd">            The metadata object if present, otherwise None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_podio_metadata&quot;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_podio_metadata</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+    
+    <span class="c1"># Lazy action</span>
+<div class="viewcode-block" id="RRDF.Aggregate">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Aggregate">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Aggregate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Aggregate</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Book">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Book">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Book</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Book</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Cache">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Cache">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Cache</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Cache</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Count">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Count">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Count</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Count</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RRDF.Display">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Display">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Display</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Fill">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Fill">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Fill</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Fill</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RRDF.Graph">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Graph">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RRDF.GraphAsymmErrors">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.GraphAsymmErrors">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">GraphAsymmErrors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">GraphAsymmErrors</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+
+    
+<div class="viewcode-block" id="RRDF.Histo1D">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Histo1D">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Histo1D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Histo1D</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Histo2D">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Histo2D">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Histo2D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Histo2D</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RRDF.Histo3D">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Histo3D">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Histo3D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Histo3D</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.HistoND">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.HistoND">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">HistoND</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">HistoND</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RRDF.Max">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Max">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Max</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span>   </div>
+
+    
+<div class="viewcode-block" id="RRDF.Mean">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Mean">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Mean</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Min">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Min">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Min</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Profile1D">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Profile1D">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Profile1D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Profile1D</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Profile2D">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Profile2D">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Profile2D</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Profile2D</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Reduce">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Reduce">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Reduce</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Report">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Report">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Report</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Report</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="RRDF.Stats">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Stats">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Stats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.StdDev">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.StdDev">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">StdDev</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">StdDev</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Sum">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Sum">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Sum</span><span class="p">(</span><span class="o">*</span> <span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Take</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; &quot;&quot;&quot;</span>
+        <span class="n">callsite_info</span> <span class="o">=</span> <span class="n">get_callsite_info</span><span class="p">()</span>
+        <span class="n">proxied</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Take</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="n">handler</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">callsite_info</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TemplateProxyProxy</span><span class="p">(</span><span class="n">proxied</span><span class="p">,</span> <span class="n">post</span><span class="p">)</span>
+     
+<div class="viewcode-block" id="RRDF.AsNumpy">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.AsNumpy">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">AsNumpy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method behaves similarly to `AsNumpy()` in ROOT&#39;s RDataFrame.</span>
+<span class="sd">        It triggers immediate evaluation and returns the result as a NumPy-compatible</span>
+<span class="sd">        structure (typically a dict of arrays).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">_LazyAsNumpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">GetValue</span><span class="p">()</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.AsNumpy_">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.AsNumpy_">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">AsNumpy_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Unlike `AsNumpy()`, this method does not immediately evaluate the result.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="n">_LazyAsNumpy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">call_handler</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handler</span><span class="p">,</span> <span class="n">get_callsite_info</span><span class="p">())</span>   </div>
+
+    
+
+    <span class="c1"># Instant action</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="n">instant_action</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;Foreach&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;ForeachSlot&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;Snapshot&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+
+        <span class="n">Queries</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">&quot;Describe&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GetColumnNames&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GetColumnType&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GetColumnTypeNamesList&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GetDefinedColumnNames&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GetFilterNames&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GetNRuns&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;GetNSlots&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;SaveGraph&quot;</span><span class="p">,</span>
+        <span class="p">]</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">Queries</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>            
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">instant_action</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; object has no attribute &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RRDF.Alias">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Alias">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Alias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Alias</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Define">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Define">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Define</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Define</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.DefinePerSample">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.DefinePerSample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">DefinePerSample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">DefinePerSample</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.DefineSlot">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.DefineSlot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">DefineSlot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">DefineSlot</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Filter">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Filter">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Range">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Range">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Range</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Redefine">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Redefine">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Redefine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Redefine</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.RedefineSlot">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.RedefineSlot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">RedefineSlot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">RedefineSlot</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.RedefinePerSample">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.RedefinePerSample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">RedefinePerSample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">RedefinePerSample</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RRDF.Vary">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Vary">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Vary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;  &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">Vary</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+
+
+
+<div class="viewcode-block" id="RRDF.ReadEvent">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.ReadEvent">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">ReadEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eventName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">collections</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+                  <span class="n">printGeneratedCode</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                  <span class="n">throwExceptionOnRefCollIDNotFound</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;       </span>
+<span class="sd">        Read an event from the underlying data source, extracting specified collections.</span>
+
+<span class="sd">        This will define an `&quot;event&quot;` column in the DataFrame that includes the requested collections.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        eventName : str</span>
+<span class="sd">            The name of the event column to define in the DataFrame.</span>
+<span class="sd">        collections : list of str or None, optional</span>
+<span class="sd">            List of collection names to read, e.g., `[&quot;MCParticles&quot;, &quot;PandoraPFOs&quot;]`.</span>
+<span class="sd">            If None, all collections will be loaded.</span>
+<span class="sd">        printGeneratedCode : bool, optional</span>
+<span class="sd">            Whether to print the C++ code generated by this operation.</span>
+<span class="sd">        throwExceptionOnRefCollIDNotFound : bool, optional</span>
+<span class="sd">            If True, raises an exception when a collection refers to another that has not been loaded.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RRDF</span>
+<span class="sd">            A new RRDF with the specified event column registered.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; df = df.ReadEvent(&quot;event&quot;, [&quot;MCParticles&quot;, &quot;PandoraPFOs&quot;])</span>
+<span class="sd">        &gt;&gt;&gt; df = df.ReadEvent(&quot;event&quot;, None)</span>
+<span class="sd">        &gt;&gt;&gt; df = df.ReadEvent(&quot;event&quot;)  # equivalent to loading all collections</span>
+<span class="sd">        &gt;&gt;&gt; df = df.ReadEvent(&quot;event&quot;, [&quot;MCParticles&quot;, &quot;PandoraPFOs&quot;], throwExceptionOnRefCollIDNotFound=True)</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Elements in `PandoraPFOs` are typically of type `edm4hep::ReconstructedParticle`, which has four </span>
+<span class="sd">        associated relations: `clusters`, `tracks`, `particles`, and `vertex`.</span>
+
+<span class="sd">        By default, `ReadEvent` does **not** load these related collections unless you explicitly specify </span>
+<span class="sd">        them. If you omit them, you can still call `auto clusters = rec.getClusters();`, but this returns </span>
+<span class="sd">        an array of **empty clusters** (not an empty array). As a result, `rec.getClusters()[...].isValid()` </span>
+<span class="sd">        returns `False`. If you then try `rec.getClusters()[...].getEnergy()`, your program will almost </span>
+<span class="sd">        certainly crash.</span>
+
+<span class="sd">        This is because `podio` is designed **not to throw exceptions**, even for invalid access.</span>
+
+<span class="sd">        Due to limitations in `RDataFrame`, related collections like `clusters` cannot be added automatically. </span>
+<span class="sd">        You must specify them manually. Enabling `throwExceptionOnRefCollIDNotFound` helps identify such </span>
+<span class="sd">        missing references:</span>
+
+<span class="sd">        &gt;&gt;&gt; df = df.ReadEvent(&quot;event&quot;, [&quot;MCParticles&quot;, &quot;PandoraPFOs&quot;], throwExceptionOnRefCollIDNotFound=True)</span>
+
+<span class="sd">        This causes the program to throw **at runtime** (when looping over events), not during registration, </span>
+<span class="sd">        because collection dependencies require actual data inspection and are not detectable from metadata alone.</span>
+
+<span class="sd">        If `collections` is set to `None`, all collections will be read:</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; df = df.ReadEvent(&quot;event&quot;, None)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">_ReadEvent</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_podio_metadata</span><span class="p">,</span> <span class="n">eventName</span><span class="o">=</span><span class="n">eventName</span><span class="p">,</span> 
+                        <span class="n">collections</span><span class="o">=</span><span class="n">collections</span><span class="p">,</span> <span class="n">printGeneratedCode</span><span class="o">=</span><span class="n">printGeneratedCode</span><span class="p">,</span>
+                        <span class="n">throwExceptionOnRefCollIDNotFound</span><span class="o">=</span><span class="n">throwExceptionOnRefCollIDNotFound</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="RRDF.Extract">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Extract">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Extract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">varible</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method defines new columns in the DataFrame by accessing individual members</span>
+<span class="sd">        of a compound object (e.g., a struct or class with attributes).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        varible : str</span>
+<span class="sd">            The name of the compound variable in the DataFrame (e.g., a collection element like `hit`).</span>
+<span class="sd">        members : list of str</span>
+<span class="sd">            The list of member field names to extract (e.g., `[&quot;x&quot;, &quot;y&quot;, &quot;z&quot;]`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RRDF</span>
+<span class="sd">            A new RRDF instance with the member fields defined as separate columns.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; df = df.Extract(&quot;hit&quot;, [&quot;x&quot;, &quot;y&quot;, &quot;z&quot;])</span>
+<span class="sd">        # Defines columns: hit_x, hit_y, hit_z as hit.x, hit.y, hit.z respectively.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+         
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span>
+        <span class="k">for</span> <span class="n">mem</span> <span class="ow">in</span> <span class="n">members</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Define</span><span class="p">(</span><span class="n">varible</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">mem</span><span class="p">,</span> <span class="n">varible</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">mem</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RRDF.Exposure">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.Exposure">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">Exposure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">varible</span><span class="p">,</span> <span class="n">members</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Expose member fields of a compound variable as top-level DataFrame columns.</span>
+
+<span class="sd">        This method defines new columns using the member fields of a compound variable.</span>
+<span class="sd">        Unlike `Extract`, which uses `varible_member` naming, this exposes members directly</span>
+<span class="sd">        as columns named after the member itself.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        varible : str</span>
+<span class="sd">            The name of the compound variable (e.g., `hit`).</span>
+<span class="sd">        members : list of str</span>
+<span class="sd">            The list of member field names to expose (e.g., `[&quot;x&quot;, &quot;y&quot;, &quot;z&quot;]`).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        RRDF</span>
+<span class="sd">            A new RRDF instance with the member fields exposed as top-level columns.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; df = df.Exposure(&quot;hit&quot;, [&quot;x&quot;, &quot;y&quot;, &quot;z&quot;])</span>
+<span class="sd">        # Defines columns: x, y, z (instead of hit_x, hit_y, hit_z)</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="n">df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span>
+        <span class="k">for</span> <span class="n">mem</span> <span class="ow">in</span> <span class="n">members</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Define</span><span class="p">(</span><span class="n">mem</span><span class="p">,</span> <span class="n">varible</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">mem</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+    
+
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">Evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_Evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    
+
+
+<div class="viewcode-block" id="RRDF.printTree">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RRDF.printTree">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">printTree</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Print the structure of this RRDF instance, including backend nesting.</span>
+<span class="sd">        This is a diagnostic method for visualizing the composition of RRDF wrappers.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indent : int, optional</span>
+<span class="sd">            The number of spaces to indent the current level (used for recursion).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">            This method prints directly to stdout.</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; df.printTree()</span>
+<span class="sd">        this is RDF</span>
+<span class="sd">            this is RDataFrame</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot; &quot;</span><span class="p">]</span><span class="o">*</span><span class="n">indent</span><span class="p">),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this is RDF&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="p">,</span> <span class="n">RRDF</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">PrintTree</span><span class="p">(</span><span class="n">indent</span><span class="o">+</span><span class="mi">4</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s2">&quot; &quot;</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">indent</span><span class="o">+</span><span class="mi">4</span><span class="p">)),</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;this is RDataFrame&quot;</span><span class="p">)</span></div>
+</div>
+
+
+    
+<div class="viewcode-block" id="RichRDF">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.RichRDF">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">RichRDF</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="n">readMetadata</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">RDataFrame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an enriched RRDF (RDataFrame wrapper) with optional metadata support.</span>
+
+<span class="sd">    This function wraps a ROOT `RDataFrame` and optionally attaches evaluation context </span>
+<span class="sd">    and PODIO metadata. It provides enhanced features via the `RRDF` interface.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    *kargs : tuple</span>
+<span class="sd">        Positional arguments forwarded to the ROOT `RDataFrame` constructor.</span>
+<span class="sd">    readMetadata : bool, optional</span>
+<span class="sd">        Whether to try reading and attaching PODIO metadata (default: True).</span>
+<span class="sd">    RDataFrame : callable, optional</span>
+<span class="sd">        A custom RDataFrame constructor. If None, uses `ROOT.RDataFrame`.</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional keyword arguments forwarded to the RDataFrame constructor and metadata reader.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    RRDF</span>
+<span class="sd">        A wrapped ROOT RDataFrame instance with evaluation and optional metadata context.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - If metadata reading fails, a traceback is printed but execution continues.</span>
+<span class="sd">    - Evaluation context is always initialized.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">RDataFrame</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">import</span><span class="w"> </span><span class="nn">ROOT</span>
+        <span class="n">RDataFrame</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">RDataFrame</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">RDataFrame</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">RRDF</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">_eval_context</span> <span class="o">=</span> <span class="n">init_EvaluateInfo</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">readMetadata</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">metadata</span> <span class="o">=</span> <span class="n">init_Metadata</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">_podio_metadata</span> <span class="o">=</span> <span class="n">metadata</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="kn">import</span><span class="w"> </span><span class="nn">traceback</span>
+            <span class="n">traceback</span><span class="o">.</span><span class="n">print_exc</span><span class="p">()</span> 
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error reading metadata: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;But we continue&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Harry LIANG.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>richrdf.experimental.setupROOT &mdash; RichRDF  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            RichRDF
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">RichRDF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../../richrdf.html">richrdf</a></li>
+      <li class="breadcrumb-item active">richrdf.experimental.setupROOT</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for richrdf.experimental.setupROOT</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+
+<div class="viewcode-block" id="setupROOT">
+<a class="viewcode-back" href="../../../richrdf.experimental.html#richrdf.experimental.setupROOT.setupROOT">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setupROOT</span><span class="p">(</span><span class="n">cvmfsversion</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Configure ROOT and environment paths based on a given Key4HEP CVMFS version.</span>
+
+<span class="sd">    This function sets up the necessary `LD_LIBRARY_PATH`, Python import paths,</span>
+<span class="sd">    and ROOT include paths for working with `edm4hep` and `podio` using the CVMFS-based</span>
+<span class="sd">    Key4HEP stack. It dynamically locates shared libraries and includes, loads required</span>
+<span class="sd">    ROOT libraries, and modifies the runtime environment accordingly.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cvmfsversion : str</span>
+<span class="sd">        The Key4HEP release version or full path. Example:</span>
+<span class="sd">        - &quot;2024-10-03/x86_64-almalinux9-gcc14.2.0-opt&quot;</span>
+<span class="sd">        - &quot;/cvmfs/sw.hsf.org/key4hep/releases/2024-10-03/x86_64-almalinux9-gcc14.2.0-opt&quot;</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - This function assumes that CVMFS is mounted and accessible at `/cvmfs`.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; setupROOT(&quot;2024-10-03/x86_64-almalinux9-gcc14.2.0-opt&quot;)</span>
+<span class="sd">    &gt;&gt;&gt; import ROOT</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;CVMFS version&quot;</span><span class="p">,</span> <span class="n">cvmfsversion</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">cvmfsversion</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;/cvmfs/&quot;</span><span class="p">):</span>
+        <span class="n">key4hep_path</span><span class="o">=</span><span class="n">cvmfsversion</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">key4hep_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;/cvmfs/sw.hsf.org/key4hep/releases/</span><span class="si">{</span><span class="n">cvmfsversion</span><span class="si">}</span><span class="s2">&quot;</span>
+        
+    <span class="n">lddir</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">lddir</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key4hep_path</span><span class="si">}</span><span class="s2">/root/*/lib&quot;</span><span class="p">))</span>
+    <span class="n">lddir</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key4hep_path</span><span class="si">}</span><span class="s2">/edm4hep/*/lib&quot;</span><span class="p">))</span>
+    <span class="n">lddir</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key4hep_path</span><span class="si">}</span><span class="s2">/podio/*/lib&quot;</span><span class="p">))</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;LDDIR &quot;</span><span class="p">,</span> <span class="n">lddir</span><span class="p">)</span>
+
+    <span class="n">lddir</span> <span class="o">=</span> <span class="s2">&quot;:&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lddir</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;LD_LIBRARY_PATH&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lddir</span> <span class="o">+</span> <span class="s2">&quot;:&quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;LD_LIBRARY_PATH&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+
+    <span class="c1"># use cvmfs ROOT</span>
+    <span class="n">rootdir</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key4hep_path</span><span class="si">}</span><span class="s2">/root/*/lib&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;ROOTDIR&quot;</span><span class="p">,</span> <span class="n">rootdir</span><span class="p">,</span> <span class="p">[</span><span class="n">rootdir_</span> <span class="o">+</span> <span class="s2">&quot;/root&quot;</span> <span class="k">for</span> <span class="n">rootdir_</span> <span class="ow">in</span> <span class="n">rootdir</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">rootdir_</span> <span class="ow">in</span> <span class="n">rootdir</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rootdir_</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rootdir_</span> <span class="o">+</span> <span class="s2">&quot;/root&quot;</span><span class="p">)</span>
+
+    <span class="n">includes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">includes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key4hep_path</span><span class="si">}</span><span class="s2">/edm4hep/*/include&quot;</span><span class="p">))</span>
+    <span class="n">includes</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key4hep_path</span><span class="si">}</span><span class="s2">/podio/*/include&quot;</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Includes&quot;</span><span class="p">,</span> <span class="n">includes</span><span class="p">)</span>
+
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">ROOT</span>
+    <span class="c1"># this line must be before OT.gSystem.Load</span>
+    <span class="k">for</span> <span class="n">inc</span> <span class="ow">in</span> <span class="n">includes</span><span class="p">:</span>
+        <span class="n">ROOT</span><span class="o">.</span><span class="n">gInterpreter</span><span class="o">.</span><span class="n">AddIncludePath</span><span class="p">(</span><span class="n">inc</span><span class="p">)</span>
+
+    <span class="n">ROOT</span><span class="o">.</span><span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="s2">&quot;libedm4hep.so&quot;</span><span class="p">)</span>
+    <span class="n">ROOT</span><span class="o">.</span><span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="s2">&quot;libedm4hepDict.so&quot;</span><span class="p">)</span>
+    <span class="n">ROOT</span><span class="o">.</span><span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;libedm4hepRDF.so&quot;</span><span class="p">)</span>
+    <span class="n">ROOT</span><span class="o">.</span><span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;libedm4hepUtils.so&quot;</span><span class="p">)</span>
+
+    <span class="n">ROOT</span><span class="o">.</span><span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;libpodio.so&quot;</span><span class="p">)</span>
+    <span class="n">ROOT</span><span class="o">.</span><span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;libpodioDict.so&quot;</span><span class="p">)</span>
+    <span class="n">ROOT</span><span class="o">.</span><span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;libpodioRootIO.so&quot;</span><span class="p">)</span>
+    <span class="n">ROOT</span><span class="o">.</span><span class="n">gSystem</span><span class="o">.</span><span class="n">Load</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;libpodioRootIODict.so&quot;</span><span class="p">)</span></div>
+
+     
+    <span class="c1">#ROOT.gSystem.Load(f&quot;libGLU.so&quot;)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Setup ROOT for CVMFS.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;cvmfsversion&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;CVMFS version to setup&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    
+    <span class="n">setupROOT</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">cvmfsversion</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">This will no long take effect after you exit python</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Harry LIANG.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
