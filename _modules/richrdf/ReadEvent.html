@@ -1,0 +1,582 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>richrdf.ReadEvent &mdash; RichRDF  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            RichRDF
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">RichRDF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../richrdf.html">richrdf</a></li>
+      <li class="breadcrumb-item active">richrdf.ReadEvent</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for richrdf.ReadEvent</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">glob</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="n">CollTypeInfo</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;CollTypeInfo&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;isSubColl&quot;</span><span class="p">,</span> <span class="s2">&quot;version&quot;</span><span class="p">])</span>
+<span class="n">CollectionIDTable</span>  <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;CollectionIDTable&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">])</span>
+
+
+<div class="viewcode-block" id="Event_Metadata">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.Event_Metadata">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Event_Metadata</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; EventMetadata &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">branchNames</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">branchNames</span> <span class="o">=</span> <span class="n">branchNames</span>
+
+<div class="viewcode-block" id="Event_Metadata.getBranchNames">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.Event_Metadata.getBranchNames">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getBranchNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the names of all branches.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">branchNames</span></div>
+</div>
+
+
+<div class="viewcode-block" id="PODIO_Metadata">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.PODIO_Metadata">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PODIO_Metadata</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; PODIO_Metadata &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">coll_type_infos</span><span class="p">,</span> <span class="n">events_collIDTable</span><span class="p">,</span> <span class="n">edm_defs</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">coll_type_infos</span> <span class="o">=</span> <span class="n">coll_type_infos</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events_collIDTable</span> <span class="o">=</span> <span class="n">events_collIDTable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">edm_defs</span> <span class="o">=</span> <span class="n">edm_defs</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">events_id_to_name</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events_name_to_id</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colls_id_to_type</span>  <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events_coll_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events_coll_ids</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">coll</span> <span class="ow">in</span> <span class="n">events_collIDTable</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events_coll_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coll</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events_coll_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">coll</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events_id_to_name</span><span class="p">[</span><span class="n">coll</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">coll</span><span class="o">.</span><span class="n">name</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">events_name_to_id</span><span class="p">[</span><span class="n">coll</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">coll</span><span class="o">.</span><span class="n">id</span>
+        
+        <span class="k">for</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">coll_type_infos</span><span class="p">:</span>
+            <span class="nb">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">isSubColl</span><span class="p">,</span> <span class="n">version</span> <span class="o">=</span> <span class="n">info</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">colls_id_to_type</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">CollTypeInfo</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">isSubColl</span><span class="p">,</span> <span class="n">version</span><span class="p">)</span>
+
+        <span class="c1">#self.relBranches = getRelBranches(self)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">relBranches</span> <span class="o">=</span> <span class="n">getRelBranchesFromDefs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vecMembers</span> <span class="o">=</span> <span class="n">getVecMembersFromDefs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+    
+<div class="viewcode-block" id="PODIO_Metadata.getCollTypeInfos">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.PODIO_Metadata.getCollTypeInfos">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCollTypeInfos</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the collection type information.</span>
+<span class="sd">        return array of CollTypeInfo().</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">coll_type_infos</span>    </div>
+
+    
+<div class="viewcode-block" id="PODIO_Metadata.getCollNames">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.PODIO_Metadata.getCollNames">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCollNames</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the names of all collections.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">events_coll_names</span></div>
+
+    
+<div class="viewcode-block" id="PODIO_Metadata.getEventCollIDTable">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.PODIO_Metadata.getEventCollIDTable">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getEventCollIDTable</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the collection type information.</span>
+<span class="sd">        return array of CollectionIDTable().</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">events_collIDTable</span></div>
+
+
+<div class="viewcode-block" id="PODIO_Metadata.getCollIDByName">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.PODIO_Metadata.getCollIDByName">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCollIDByName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the ID of a collection by its name.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events_name_to_id</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> not found in metadata (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">events_coll_names</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events_name_to_id</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">id</span></div>
+
+
+<div class="viewcode-block" id="PODIO_Metadata.getCollNameByID">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.PODIO_Metadata.getCollNameByID">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCollNameByID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the name of a collection by its ID.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">events_id_to_name</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> not found in metadata (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">events_coll_name</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">events_id_to_name</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">name</span></div>
+
+    
+<div class="viewcode-block" id="PODIO_Metadata.getCollTypeByID">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.PODIO_Metadata.getCollTypeByID">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCollTypeByID</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the type of a collection by its ID.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="nb">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">colls_id_to_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection type for Collection </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> not found in metadata&quot;</span><span class="p">)</span>
+        
+        <span class="nb">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colls_id_to_type</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">type</span></div>
+
+
+<div class="viewcode-block" id="PODIO_Metadata.getCollTypeByName">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.PODIO_Metadata.getCollTypeByName">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">getCollTypeByName</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Get the type of a collection by its name.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCollIDByName</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">colls_id_to_type</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection type for Collection </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> with ID </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> not found in metadata&quot;</span><span class="p">)</span>
+        
+        <span class="nb">type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">colls_id_to_type</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">type</span></div>
+</div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">getRelBranchesFromDefs</span><span class="p">(</span><span class="n">podio_metadata</span><span class="p">):</span>
+    <span class="n">relBranches</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">typeRels</span> <span class="ow">in</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">edm_defs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">typeName</span><span class="p">,</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">typeRels</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+
+            <span class="n">relBranches</span><span class="p">[</span><span class="n">typeName</span> <span class="o">+</span> <span class="s2">&quot;Collection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="s2">&quot;OneToManyRelations&quot;</span> <span class="ow">in</span> <span class="n">rel</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rel</span><span class="p">[</span><span class="s2">&quot;OneToManyRelations&quot;</span><span class="p">]:</span>
+                    <span class="n">relBranches</span><span class="p">[</span><span class="n">typeName</span> <span class="o">+</span> <span class="s2">&quot;Collection&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            
+            <span class="k">if</span> <span class="s2">&quot;OneToOneRelations&quot;</span> <span class="ow">in</span> <span class="n">rel</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rel</span><span class="p">[</span><span class="s2">&quot;OneToOneRelations&quot;</span><span class="p">]:</span>
+                    <span class="n">relBranches</span><span class="p">[</span><span class="n">typeName</span> <span class="o">+</span> <span class="s2">&quot;Collection&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+
+    <span class="c1">#print(json.dumps(relBranches, indent=4))</span>
+    <span class="k">return</span> <span class="n">relBranches</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">getVecMembersFromDefs</span><span class="p">(</span><span class="n">podio_metadata</span><span class="p">):</span>
+    <span class="n">relBranches</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">typeRels</span> <span class="ow">in</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">edm_defs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">typeName</span><span class="p">,</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">typeRels</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">relBranches</span><span class="p">[</span><span class="n">typeName</span> <span class="o">+</span> <span class="s2">&quot;Collection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="s2">&quot;VectorMembers&quot;</span> <span class="ow">in</span> <span class="n">rel</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">rel</span><span class="p">[</span><span class="s2">&quot;VectorMembers&quot;</span><span class="p">]:</span>
+                    <span class="n">relBranches</span><span class="p">[</span><span class="n">typeName</span> <span class="o">+</span> <span class="s2">&quot;Collection&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">relBranches</span>
+
+<div class="viewcode-block" id="Metadata">
+<a class="viewcode-back" href="../../richrdf.html#richrdf.ReadEvent.Metadata">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Metadata</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Metadata &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">podio_metadata</span> <span class="p">:</span> <span class="n">PODIO_Metadata</span><span class="p">,</span> <span class="n">events_Metadata</span><span class="p">:</span> <span class="n">Event_Metadata</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">podio_metadata</span> <span class="o">=</span> <span class="n">podio_metadata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">events_metadata</span> <span class="o">=</span> <span class="n">events_Metadata</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_defs_from_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+
+    <span class="n">EDMDefinitions</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">EDMDefinitions</span>
+    <span class="n">rels_defs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">de</span> <span class="ow">in</span> <span class="n">EDMDefinitions</span><span class="p">:</span>
+        <span class="n">namespace</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">de</span><span class="o">.</span><span class="n">_0</span><span class="p">)</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">de</span><span class="o">.</span><span class="n">_1</span><span class="p">)</span>
+        
+        <span class="n">rels_defs_name</span><span class="o">=</span><span class="p">{}</span>
+        <span class="n">rels_defs</span><span class="p">[</span><span class="n">namespace</span><span class="p">]</span> <span class="o">=</span> <span class="n">rels_defs_name</span>
+        <span class="n">js</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="c1">#print(json.dumps(js, indent=4))</span>
+        <span class="k">if</span> <span class="s2">&quot;datatypes&quot;</span> <span class="ow">in</span> <span class="n">js</span><span class="p">:</span>
+            <span class="n">datatypes</span> <span class="o">=</span> <span class="n">js</span><span class="p">[</span><span class="s2">&quot;datatypes&quot;</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">typeName</span><span class="p">,</span> <span class="n">typeDef</span> <span class="ow">in</span> <span class="n">datatypes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                
+                <span class="n">one2ManyRels</span><span class="o">=</span><span class="p">[]</span>
+                <span class="n">one2OneRels</span><span class="o">=</span><span class="p">[]</span>
+                <span class="n">vectorMems</span><span class="o">=</span><span class="p">[]</span>
+                <span class="k">if</span> <span class="s2">&quot;OneToManyRelations&quot;</span> <span class="ow">in</span> <span class="n">typeDef</span><span class="p">:</span>
+                    <span class="n">OneToManyRelations</span> <span class="o">=</span> <span class="n">typeDef</span><span class="p">[</span><span class="s2">&quot;OneToManyRelations&quot;</span><span class="p">]</span>    
+                    <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">OneToManyRelations</span><span class="p">:</span>
+                        <span class="n">sps</span> <span class="o">=</span> <span class="n">rel</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+                        <span class="n">one2ManyRel</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">sps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">sps</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+                        <span class="n">one2ManyRels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">one2ManyRel</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="s2">&quot;OneToOneRelations&quot;</span> <span class="ow">in</span> <span class="n">typeDef</span><span class="p">:</span>
+                    <span class="n">OneToOneRelations</span> <span class="o">=</span> <span class="n">typeDef</span><span class="p">[</span><span class="s2">&quot;OneToOneRelations&quot;</span><span class="p">]</span>    
+                    <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">OneToOneRelations</span><span class="p">:</span>
+                        <span class="n">sps</span> <span class="o">=</span> <span class="n">rel</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+                        <span class="n">one2OneRel</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">sps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">sps</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+                        <span class="n">one2OneRels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">one2OneRel</span><span class="p">)</span>
+                <span class="k">if</span> <span class="s2">&quot;VectorMembers&quot;</span> <span class="ow">in</span> <span class="n">typeDef</span><span class="p">:</span>
+                    <span class="n">VectorMembers</span> <span class="o">=</span> <span class="n">typeDef</span><span class="p">[</span><span class="s2">&quot;VectorMembers&quot;</span><span class="p">]</span>    
+                    <span class="k">for</span> <span class="n">rel</span> <span class="ow">in</span> <span class="n">VectorMembers</span><span class="p">:</span>
+                        <span class="n">sps</span> <span class="o">=</span> <span class="n">rel</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+                        <span class="n">vectorMem</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">sps</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">sps</span><span class="p">[</span><span class="mi">1</span><span class="p">]}</span>
+                        <span class="n">vectorMems</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vectorMem</span><span class="p">)</span>
+
+                <span class="n">rels_defs_name</span><span class="p">[</span><span class="n">typeName</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;OneToManyRelations&quot;</span><span class="p">:</span> <span class="n">one2ManyRels</span><span class="p">,</span> 
+                                        <span class="s2">&quot;OneToOneRelations&quot;</span><span class="p">:</span> <span class="n">one2OneRels</span><span class="p">,</span>
+                                        <span class="s2">&quot;VectorMembers&quot;</span><span class="p">:</span> <span class="n">vectorMems</span><span class="p">}</span>
+                
+    <span class="c1">#print(json.dumps(rels_defs, indent=4))</span>
+    <span class="k">return</span> <span class="n">rels_defs</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_podio_metadata</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">ROOT</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;podio_metadata&quot;</span><span class="p">)</span>
+    <span class="n">entry</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">GetEntry</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># cursor to the first entry</span>
+
+    <span class="n">coll_type_infos</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">events___CollectionTypeInfo</span><span class="p">)):</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">events___CollectionTypeInfo</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">info</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">_0</span><span class="p">),</span> <span class="n">info</span><span class="o">.</span><span class="n">_1</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">_2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">_3</span><span class="p">))</span>
+        <span class="n">coll_type_infos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+
+    <span class="n">events_colls_name</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">events___idTable</span><span class="o">.</span><span class="n">names</span><span class="p">()]</span>
+    <span class="n">events_colls_id</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">events___idTable</span><span class="o">.</span><span class="n">ids</span><span class="p">()]</span>
+    <span class="n">events_collIDTable</span> <span class="o">=</span> <span class="p">[</span><span class="n">CollectionIDTable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">id</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">events_colls_name</span><span class="p">,</span> <span class="n">events_colls_id</span><span class="p">)]</span>
+    <span class="n">rel_defs</span> <span class="o">=</span> <span class="n">get_defs_from_tree</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
+
+    
+    <span class="k">return</span> <span class="n">PODIO_Metadata</span><span class="p">(</span><span class="n">coll_type_infos</span><span class="p">,</span> <span class="n">events_collIDTable</span><span class="p">,</span> <span class="n">rel_defs</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_events_metadata</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">Get</span><span class="p">(</span><span class="s2">&quot;events&quot;</span><span class="p">)</span>
+    <span class="n">branches</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">GetListOfBranches</span><span class="p">()</span>
+    <span class="n">branchNames</span> <span class="o">=</span> <span class="p">[</span> <span class="nb">str</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">GetName</span><span class="p">())</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">branches</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Event_Metadata</span><span class="p">(</span><span class="n">branchNames</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_metadata</span><span class="p">(</span><span class="n">file</span><span class="p">):</span>
+    <span class="n">podio_metadata</span> <span class="o">=</span> <span class="n">get_podio_metadata</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="n">events_metadata</span> <span class="o">=</span> <span class="n">get_events_metadata</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Metadata</span><span class="p">(</span><span class="n">podio_metadata</span><span class="p">,</span> <span class="n">events_metadata</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_string_like</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_list_like</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">))</span>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ReadPODIO_Metadata</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">ROOT</span>
+    
+    <span class="k">if</span> <span class="n">_is_string_like</span><span class="p">(</span><span class="n">fileName</span><span class="p">):</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="p">[</span><span class="n">fileName</span><span class="p">]</span>
+
+    <span class="k">assert</span> <span class="n">_is_list_like</span><span class="p">(</span><span class="n">fileName</span><span class="p">),</span> <span class="s2">&quot;fileName must be a string or a list of strings&quot;</span>
+    
+    <span class="n">fileNames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">filename_</span> <span class="ow">in</span> <span class="n">fileName</span><span class="p">:</span>
+        <span class="k">assert</span> <span class="n">_is_string_like</span><span class="p">(</span><span class="n">filename_</span><span class="p">),</span> <span class="sa">f</span><span class="s2">&quot;fileName must be a string or a list of strings, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">filename_</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">fileNames</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">filename_</span><span class="p">))</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">fileNames</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;No file at all&quot;</span>
+
+    <span class="n">file</span> <span class="o">=</span> <span class="n">ROOT</span><span class="o">.</span><span class="n">TFile</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">fileNames</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">get_metadata</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">e</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">Close</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">metadata</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">init_Metadata</span><span class="p">(</span><span class="o">*</span><span class="n">kargs</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kargs</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">kargs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="s2">&quot;filenameglob&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;filenameglob&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="s2">&quot;filename&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;filename&quot;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="s2">&quot;filenames&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">fileName</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;filenames&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;fileName not found in arguments&quot;</span><span class="p">)</span>
+
+    <span class="n">metadata</span> <span class="o">=</span> <span class="n">ReadPODIO_Metadata</span><span class="p">(</span><span class="n">fileName</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">metadata</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_collections</span><span class="p">(</span><span class="n">collections</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Metadata</span><span class="p">):</span>
+    <span class="n">podio_metadata</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">podio_metadata</span>
+    <span class="n">events_metadata</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">events_metadata</span>
+
+    <span class="k">if</span> <span class="n">collections</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">collections</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">collections</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">collName</span><span class="p">,</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">events_name_to_id</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">colls_id_to_type</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection </span><span class="si">{</span><span class="n">collName</span><span class="si">}</span><span class="s2"> with ID </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> has no type information, skipping&quot;</span><span class="p">)</span>     
+                <span class="k">continue</span>
+            
+            <span class="n">collType</span> <span class="o">=</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">colls_id_to_type</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">collType</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">relBranches</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection </span><span class="si">{</span><span class="n">collName</span><span class="si">}</span><span class="s2"> with type </span><span class="si">{</span><span class="n">collType</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2"> has no edm defintion, skipping&quot;</span><span class="p">)</span>
+                <span class="k">continue</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">collType</span><span class="o">.</span><span class="n">isSubColl</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">collName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">events_metadata</span><span class="o">.</span><span class="n">branchNames</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection </span><span class="si">{</span><span class="n">collName</span><span class="si">}</span><span class="s2"> has no branch name, skipping&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">collName</span> <span class="o">+</span> <span class="s2">&quot;_objIdx&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">events_metadata</span><span class="o">.</span><span class="n">branchNames</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Collection </span><span class="si">{</span><span class="n">collName</span><span class="si">}</span><span class="s2"> has no branch name (</span><span class="si">{</span><span class="n">collName</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;_objIdx&#39;</span><span class="si">}</span><span class="s2">), skipping&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+            <span class="n">collections</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">collName</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">collections</span>
+    
+<span class="k">def</span><span class="w"> </span><span class="nf">ReadEventDefintion</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metadata</span><span class="p">:</span> <span class="n">Metadata</span><span class="p">,</span> <span class="n">collections</span><span class="p">,</span> 
+                       <span class="n">throwExceptionOnRefCollIDNotFound</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+
+    <span class="n">podio_metadata</span> <span class="o">=</span> <span class="n">metadata</span><span class="o">.</span><span class="n">podio_metadata</span>
+    <span class="n">collections</span> <span class="o">=</span> <span class="n">get_collections</span><span class="p">(</span><span class="n">collections</span><span class="p">,</span> <span class="n">metadata</span><span class="p">)</span>
+
+
+    <span class="n">collTypeNames</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">collIds</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">isSubcoll</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">collName</span> <span class="ow">in</span> <span class="n">collections</span><span class="p">:</span>
+        <span class="n">collId</span> <span class="o">=</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">getCollIDByName</span><span class="p">(</span><span class="n">collName</span><span class="p">)</span>
+        <span class="c1">#collType = podio_metadata.getTypeByID(collId)</span>
+        <span class="n">collType</span> <span class="o">=</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">getCollTypeByName</span><span class="p">(</span><span class="n">collName</span><span class="p">)</span>
+        <span class="n">collIds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">collId</span><span class="p">)</span>
+        <span class="n">collTypeNames</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">collType</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">isSubcoll</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">collType</span><span class="o">.</span><span class="n">isSubColl</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_for_normal_collection</span><span class="p">(</span><span class="n">collName</span><span class="p">,</span> <span class="n">collID</span><span class="p">,</span> <span class="n">collType</span><span class="p">):</span>
+        <span class="n">relBranches</span> <span class="o">=</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">relBranches</span>
+        <span class="n">vecMembers</span> <span class="o">=</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">vecMembers</span>
+        <span class="n">branches_relations</span> <span class="o">=</span> <span class="n">relBranches</span><span class="p">[</span><span class="n">collType</span><span class="p">]</span>
+        <span class="n">branches_relations</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">collName</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">br</span> <span class="k">for</span> <span class="n">br</span> <span class="ow">in</span> <span class="n">branches_relations</span> <span class="p">]</span>
+        <span class="n">str_rel_branches</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;&amp;</span><span class="si">{</span><span class="n">brName</span><span class="si">}</span><span class="s1">, //// </span><span class="si">{</span><span class="n">brName</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">brName</span> <span class="ow">in</span> <span class="n">branches_relations</span><span class="p">)</span>
+
+        <span class="n">memVec</span> <span class="o">=</span> <span class="n">vecMembers</span><span class="p">[</span><span class="n">collType</span><span class="p">]</span>
+
+        <span class="n">memVecTypeName</span> <span class="o">=</span> <span class="p">[</span> <span class="n">br</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">br</span> <span class="ow">in</span> <span class="n">memVec</span> <span class="p">]</span>
+        <span class="n">strMemVecTypeName</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span> <span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">typeName</span><span class="si">}</span><span class="s1">&quot;, &#39;</span> <span class="k">for</span> <span class="n">typeName</span> <span class="ow">in</span> <span class="n">memVecTypeName</span> <span class="p">])</span>
+        <span class="n">memVecName</span> <span class="o">=</span> <span class="p">[</span> <span class="n">br</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">br</span> <span class="ow">in</span> <span class="n">memVec</span> <span class="p">]</span>
+        <span class="n">memVecBrName</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">collName</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">br</span> <span class="k">for</span> <span class="n">br</span> <span class="ow">in</span> <span class="n">memVecName</span> <span class="p">]</span>
+
+        <span class="n">memArray</span><span class="o">=</span><span class="p">[]</span>
+        <span class="k">for</span> <span class="n">typeName</span><span class="p">,</span> <span class="n">brName</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">memVecTypeName</span><span class="p">,</span> <span class="n">memVecBrName</span><span class="p">):</span>
+            <span class="n">memArray</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;new std::vector&lt; </span><span class="si">{</span><span class="n">typeName</span><span class="si">}</span><span class="s2"> &gt;(</span><span class="si">{</span><span class="n">brName</span><span class="si">}</span><span class="s2">.data(), </span><span class="si">{</span><span class="n">brName</span><span class="si">}</span><span class="s2">.data() + </span><span class="si">{</span><span class="n">brName</span><span class="si">}</span><span class="s2">.size()), // </span><span class="si">{</span><span class="n">brName</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">strMemArray</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">memArray</span><span class="p">)</span>
+
+        <span class="c1"># You dont want MCParticle to be replaced by the var0???</span>
+        <span class="n">collName1</span> <span class="o">=</span> <span class="n">collName</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">collName2</span> <span class="o">=</span> <span class="n">collName</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+
+        
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        do </span><span class="se">{{</span>
+<span class="s1">            using EntityData = </span><span class="si">{</span><span class="n">collType</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;Collection&quot;</span><span class="p">)]</span><span class="si">}</span><span class="s1">Data;</span>
+<span class="s1">            using CollectionData = </span><span class="si">{</span><span class="n">collType</span><span class="si">}</span><span class="s1">Data;</span>
+<span class="s1">            using Collection = </span><span class="si">{</span><span class="n">collType</span><span class="si">}</span><span class="s1">;</span>
+
+<span class="s1">            using Reader = rrdf::evtd::CollectionReader&lt;CollectionData, Collection, EntityData&gt;;</span>
+<span class="s1">        </span>
+<span class="s1">            ROOT::VecOps::RVec&lt;EntityData&gt; const &amp;entities = </span><span class="si">{</span><span class="n">collName</span><span class="si">}</span><span class="s1">; // </span><span class="si">{</span><span class="n">collName1</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">collName2</span><span class="si">}</span>
+
+<span class="s1">            std::initializer_list&lt; ROOT::VecOps::RVec&lt;podio::ObjectID&gt; const* &gt;  rels = </span><span class="se">{{</span><span class="s1"> </span>
+<span class="s1">            </span><span class="si">{</span><span class="n">str_rel_branches</span><span class="si">}</span><span class="s1"> </span>
+<span class="s1">            </span><span class="se">}}</span><span class="s1">;</span>
+
+<span class="s1">            std::initializer_list&lt; std::string_view&gt; memVecName = </span><span class="se">{{</span>
+<span class="s1">            </span><span class="si">{</span><span class="n">strMemVecTypeName</span><span class="si">}</span>
+<span class="s1">            </span><span class="se">}}</span><span class="s1">;</span>
+
+<span class="s1">            std::initializer_list&lt; void *&gt; memVec  = </span><span class="se">{{</span><span class="s1"> // std::vector&lt;xxxx&gt; *</span>
+<span class="s1">            </span><span class="si">{</span><span class="n">strMemArray</span><span class="si">}</span>
+<span class="s1">            </span><span class="se">}}</span><span class="s1">;</span>
+<span class="s1">            </span>
+<span class="s1">            char const *collName_ = &quot;</span><span class="si">{</span><span class="n">collName1</span><span class="si">}</span><span class="s1">&quot;  &quot;</span><span class="si">{</span><span class="n">collName2</span><span class="si">}</span><span class="s1">&quot;; // concatenate the strings</span>
+<span class="s1">            Reader::read(event, collName_, </span><span class="si">{</span><span class="n">collID</span><span class="si">}</span><span class="s1">, &quot;</span><span class="si">{</span><span class="n">collType</span><span class="si">}</span><span class="s1">&quot;, &amp;entities, </span>
+<span class="s1">                rels, memVecName, memVec);</span>
+
+<span class="s1">        </span><span class="se">}}</span><span class="s1"> while(0);</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_for_sub_collection</span><span class="p">(</span><span class="n">collName</span><span class="p">,</span> <span class="n">collID</span><span class="p">,</span> <span class="n">collType</span><span class="p">):</span>
+        <span class="c1"># You dont want MCParticle to be replaced by the var0???</span>
+        <span class="n">collName1</span> <span class="o">=</span> <span class="n">collName</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">collName2</span> <span class="o">=</span> <span class="n">collName</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">        do </span><span class="se">{{</span>
+<span class="s1">            using EntityData = </span><span class="si">{</span><span class="n">collType</span><span class="p">[:</span><span class="o">-</span><span class="nb">len</span><span class="p">(</span><span class="s2">&quot;Collection&quot;</span><span class="p">)]</span><span class="si">}</span><span class="s1">Data;</span>
+<span class="s1">            using CollectionData = </span><span class="si">{</span><span class="n">collType</span><span class="si">}</span><span class="s1">Data;</span>
+<span class="s1">            using Collection = </span><span class="si">{</span><span class="n">collType</span><span class="si">}</span><span class="s1">;</span>
+
+<span class="s1">            using Reader = rrdf::evtd::CollectionReader&lt;CollectionData, Collection, EntityData&gt;;</span>
+<span class="s1">                    </span>
+<span class="s1">            std::initializer_list&lt; ROOT::VecOps::RVec&lt;podio::ObjectID&gt; const* &gt;  rels = </span><span class="se">{{</span><span class="s1"> </span>
+<span class="s1">            &amp;</span><span class="si">{</span><span class="n">collName</span><span class="si">}</span><span class="s1">_objIdx, // </span><span class="si">{</span><span class="n">collName1</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">collName2</span><span class="si">}</span>
+<span class="s1">            </span><span class="se">}}</span><span class="s1">;</span>
+
+<span class="s1">            char const *collName_ = &quot;</span><span class="si">{</span><span class="n">collName1</span><span class="si">}</span><span class="s1">&quot;  &quot;</span><span class="si">{</span><span class="n">collName2</span><span class="si">}</span><span class="s1">&quot;; // concatenate the strings</span>
+<span class="s1">            Reader::readSubColl(event, collName_, </span><span class="si">{</span><span class="n">collID</span><span class="si">}</span><span class="s1">, &quot;</span><span class="si">{</span><span class="n">collType</span><span class="si">}</span><span class="s1">&quot;, rels);</span>
+
+<span class="s1">        </span><span class="se">}}</span><span class="s1"> while(0);</span>
+<span class="s1">&#39;&#39;&#39;</span>
+
+    <span class="n">body</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">collName</span><span class="p">,</span> <span class="n">collID</span><span class="p">,</span> <span class="n">collTypeName</span><span class="p">,</span> <span class="n">isSubcoll_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">collections</span><span class="p">,</span> <span class="n">collIds</span><span class="p">,</span> <span class="n">collTypeNames</span><span class="p">,</span> <span class="n">isSubcoll</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">isSubcoll_</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">+=</span> <span class="n">get_for_normal_collection</span><span class="p">(</span><span class="n">collName</span><span class="p">,</span> <span class="n">collID</span><span class="p">,</span> <span class="n">collTypeName</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">collName</span><span class="p">,</span> <span class="n">collID</span><span class="p">,</span> <span class="n">collTypeName</span><span class="p">,</span> <span class="n">isSubcoll_</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">collections</span><span class="p">,</span> <span class="n">collIds</span><span class="p">,</span> <span class="n">collTypeNames</span><span class="p">,</span> <span class="n">isSubcoll</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">isSubcoll_</span><span class="p">:</span>
+            <span class="n">body</span> <span class="o">+=</span> <span class="n">get_for_sub_collection</span><span class="p">(</span><span class="n">collName</span><span class="p">,</span> <span class="n">collID</span><span class="p">,</span> <span class="n">collTypeName</span><span class="p">)</span>
+
+    <span class="c1"># this just works, it seems the return key in the function body</span>
+
+    <span class="n">collNames</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;&quot;</span><span class="si">{</span><span class="n">coll</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">&quot; &quot;</span><span class="si">{</span><span class="n">coll</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span><span class="si">}</span><span class="s1">&quot;,</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">coll</span> <span class="ow">in</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">events_coll_names</span><span class="p">])</span>
+    <span class="n">collIDs</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">collID</span><span class="si">}</span><span class="s1">,</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="k">for</span> <span class="n">collID</span> <span class="ow">in</span> <span class="n">podio_metadata</span><span class="o">.</span><span class="n">events_coll_ids</span><span class="p">])</span>
+    <span class="n">function_body</span> <span class="o">=</span><span class="s1">&#39;&#39;&#39;</span>
+<span class="s1">    {</span>
+<span class="s1">    rrdf::Event event;</span>
+<span class="s1">&#39;&#39;&#39;</span>  <span class="o">+</span> <span class="n">body</span> <span class="o">+</span>  <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span>
+
+<span class="s1">    char const *(*getCollNameById)(uint32_t ID) = [](uint32_t ID) -&gt; char const * </span><span class="se">{{</span>
+<span class="s1">        char const *names[] = </span><span class="se">{{</span>
+<span class="s1">            </span><span class="si">{</span><span class="n">collNames</span><span class="si">}</span>
+<span class="s1">        </span><span class="se">}}</span><span class="s1">;</span>
+<span class="s1">        uint32_t IDs[] = </span><span class="se">{{</span>
+<span class="s1">            </span><span class="si">{</span><span class="n">collIDs</span><span class="si">}</span>
+<span class="s1">        </span><span class="se">}}</span><span class="s1">;</span>
+<span class="s1">        for(int i = 0; i &lt; sizeof(IDs)/sizeof(uint32_t); ++i) </span><span class="se">{{</span>
+<span class="s1">            if (IDs[i] == ID) </span><span class="se">{{</span>
+<span class="s1">                return names[i];</span>
+<span class="s1">            </span><span class="se">}}</span>
+<span class="s1">        </span><span class="se">}}</span>
+<span class="s1">        return &quot;Unknown&quot;;</span>
+<span class="s1">    </span><span class="se">}}</span><span class="s1">;</span>
+<span class="s1">    event.index = rdfentry_;</span>
+<span class="s1">    </span>
+<span class="s1">    rrdf::evtd::Options options;</span>
+<span class="s1">    options.getCollNameById = getCollNameById;</span>
+<span class="s1">    options.throwExceptionOnRefCollIDNotFound = </span><span class="si">{</span><span class="s2">&quot;true&quot;</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">throwExceptionOnRefCollIDNotFound</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s2">&quot;false&quot;</span><span class="si">}</span><span class="s1">;</span>
+<span class="s1">    rrdf::evtd::setup_Ref(event, options);</span>
+<span class="s1">    return std::move(event);</span>
+<span class="s1">&#39;&#39;&#39;</span> <span class="o">+</span> <span class="s2">&quot;}&quot;</span>
+
+    <span class="n">generate_function</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;&#39;&#39;</span><span class="si">{</span><span class="n">function_body</span><span class="si">}</span><span class="s1">&#39;&#39;&#39;</span>
+    <span class="c1"># NO, this didn&#39;t work</span>
+    <span class="c1">#generate_function = f&#39;&#39;&#39;[&amp;]() -&gt; ana::Event {{ return {function_body}; }}()&#39;&#39;&#39;</span>
+    <span class="k">return</span> <span class="n">generate_function</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_ReadEvent</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">eventName</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">collections</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
+               <span class="n">printGeneratedCode</span><span class="p">:</span><span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">throwExceptionOnRefCollIDNotFound</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="n">generate_function</span> <span class="o">=</span> <span class="n">ReadEventDefintion</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">metadata</span><span class="p">,</span> <span class="n">collections</span><span class="p">,</span> 
+                        <span class="n">throwExceptionOnRefCollIDNotFound</span><span class="o">=</span><span class="n">throwExceptionOnRefCollIDNotFound</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">printGeneratedCode</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">generate_function</span><span class="p">)</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">ROOT</span>
+    <span class="n">ROOT</span><span class="o">.</span><span class="n">gInterpreter</span><span class="o">.</span><span class="n">Declare</span><span class="p">(</span><span class="s1">&#39;#include &quot;rrdf/podioevt.h&quot;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">Define</span><span class="p">(</span><span class="n">eventName</span><span class="p">,</span> <span class="n">generate_function</span><span class="p">)</span>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Harry LIANG.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -45,6 +45,36 @@
 <li><a class="reference internal" href="#">richrdf package</a><ul>
 <li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-richrdf.ReadEvent">richrdf.ReadEvent module</a><ul>
+<li><a class="reference internal" href="#richrdf.ReadEvent.CollTypeInfo"><code class="docutils literal notranslate"><span class="pre">CollTypeInfo</span></code></a><ul>
+<li><a class="reference internal" href="#richrdf.ReadEvent.CollTypeInfo.id"><code class="docutils literal notranslate"><span class="pre">CollTypeInfo.id</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.CollTypeInfo.isSubColl"><code class="docutils literal notranslate"><span class="pre">CollTypeInfo.isSubColl</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.CollTypeInfo.name"><code class="docutils literal notranslate"><span class="pre">CollTypeInfo.name</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.CollTypeInfo.version"><code class="docutils literal notranslate"><span class="pre">CollTypeInfo.version</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.CollectionIDTable"><code class="docutils literal notranslate"><span class="pre">CollectionIDTable</span></code></a><ul>
+<li><a class="reference internal" href="#richrdf.ReadEvent.CollectionIDTable.id"><code class="docutils literal notranslate"><span class="pre">CollectionIDTable.id</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.CollectionIDTable.name"><code class="docutils literal notranslate"><span class="pre">CollectionIDTable.name</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.Event_Metadata"><code class="docutils literal notranslate"><span class="pre">Event_Metadata</span></code></a><ul>
+<li><a class="reference internal" href="#richrdf.ReadEvent.Event_Metadata.getBranchNames"><code class="docutils literal notranslate"><span class="pre">Event_Metadata.getBranchNames()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.Metadata"><code class="docutils literal notranslate"><span class="pre">Metadata</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.PODIO_Metadata"><code class="docutils literal notranslate"><span class="pre">PODIO_Metadata</span></code></a><ul>
+<li><a class="reference internal" href="#richrdf.ReadEvent.PODIO_Metadata.getCollIDByName"><code class="docutils literal notranslate"><span class="pre">PODIO_Metadata.getCollIDByName()</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.PODIO_Metadata.getCollNameByID"><code class="docutils literal notranslate"><span class="pre">PODIO_Metadata.getCollNameByID()</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.PODIO_Metadata.getCollNames"><code class="docutils literal notranslate"><span class="pre">PODIO_Metadata.getCollNames()</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.PODIO_Metadata.getCollTypeByID"><code class="docutils literal notranslate"><span class="pre">PODIO_Metadata.getCollTypeByID()</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.PODIO_Metadata.getCollTypeByName"><code class="docutils literal notranslate"><span class="pre">PODIO_Metadata.getCollTypeByName()</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.PODIO_Metadata.getCollTypeInfos"><code class="docutils literal notranslate"><span class="pre">PODIO_Metadata.getCollTypeInfos()</span></code></a></li>
+<li><a class="reference internal" href="#richrdf.ReadEvent.PODIO_Metadata.getEventCollIDTable"><code class="docutils literal notranslate"><span class="pre">PODIO_Metadata.getEventCollIDTable()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-richrdf.include">richrdf.include module</a><ul>
 <li><a class="reference internal" href="#richrdf-include">richrdf.include</a><ul>
 <li><a class="reference internal" href="#usage">Usage</a></li>
@@ -53,50 +83,6 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#module-richrdf">Module contents</a><ul>
-<li><a class="reference internal" href="#richrdf.RRDF"><code class="docutils literal notranslate"><span class="pre">RRDF</span></code></a><ul>
-<li><a class="reference internal" href="#richrdf.RRDF.Aggregate"><code class="docutils literal notranslate"><span class="pre">RRDF.Aggregate()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Alias"><code class="docutils literal notranslate"><span class="pre">RRDF.Alias()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.AsNumpy"><code class="docutils literal notranslate"><span class="pre">RRDF.AsNumpy()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.AsNumpy_"><code class="docutils literal notranslate"><span class="pre">RRDF.AsNumpy_()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Book"><code class="docutils literal notranslate"><span class="pre">RRDF.Book()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Cache"><code class="docutils literal notranslate"><span class="pre">RRDF.Cache()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Count"><code class="docutils literal notranslate"><span class="pre">RRDF.Count()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Define"><code class="docutils literal notranslate"><span class="pre">RRDF.Define()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.DefinePerSample"><code class="docutils literal notranslate"><span class="pre">RRDF.DefinePerSample()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.DefineSlot"><code class="docutils literal notranslate"><span class="pre">RRDF.DefineSlot()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Display"><code class="docutils literal notranslate"><span class="pre">RRDF.Display()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Exposure"><code class="docutils literal notranslate"><span class="pre">RRDF.Exposure()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Extract"><code class="docutils literal notranslate"><span class="pre">RRDF.Extract()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Fill"><code class="docutils literal notranslate"><span class="pre">RRDF.Fill()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Filter"><code class="docutils literal notranslate"><span class="pre">RRDF.Filter()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Graph"><code class="docutils literal notranslate"><span class="pre">RRDF.Graph()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.GraphAsymmErrors"><code class="docutils literal notranslate"><span class="pre">RRDF.GraphAsymmErrors()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Histo1D"><code class="docutils literal notranslate"><span class="pre">RRDF.Histo1D()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Histo2D"><code class="docutils literal notranslate"><span class="pre">RRDF.Histo2D()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Histo3D"><code class="docutils literal notranslate"><span class="pre">RRDF.Histo3D()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.HistoND"><code class="docutils literal notranslate"><span class="pre">RRDF.HistoND()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Max"><code class="docutils literal notranslate"><span class="pre">RRDF.Max()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Mean"><code class="docutils literal notranslate"><span class="pre">RRDF.Mean()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Min"><code class="docutils literal notranslate"><span class="pre">RRDF.Min()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Profile1D"><code class="docutils literal notranslate"><span class="pre">RRDF.Profile1D()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Profile2D"><code class="docutils literal notranslate"><span class="pre">RRDF.Profile2D()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Range"><code class="docutils literal notranslate"><span class="pre">RRDF.Range()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.ReadEvent"><code class="docutils literal notranslate"><span class="pre">RRDF.ReadEvent()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Redefine"><code class="docutils literal notranslate"><span class="pre">RRDF.Redefine()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.RedefinePerSample"><code class="docutils literal notranslate"><span class="pre">RRDF.RedefinePerSample()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.RedefineSlot"><code class="docutils literal notranslate"><span class="pre">RRDF.RedefineSlot()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Reduce"><code class="docutils literal notranslate"><span class="pre">RRDF.Reduce()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Report"><code class="docutils literal notranslate"><span class="pre">RRDF.Report()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Stats"><code class="docutils literal notranslate"><span class="pre">RRDF.Stats()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.StdDev"><code class="docutils literal notranslate"><span class="pre">RRDF.StdDev()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Sum"><code class="docutils literal notranslate"><span class="pre">RRDF.Sum()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Take"><code class="docutils literal notranslate"><span class="pre">RRDF.Take</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.Vary"><code class="docutils literal notranslate"><span class="pre">RRDF.Vary()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.getBackend"><code class="docutils literal notranslate"><span class="pre">RRDF.getBackend()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.getMetadata"><code class="docutils literal notranslate"><span class="pre">RRDF.getMetadata()</span></code></a></li>
-<li><a class="reference internal" href="#richrdf.RRDF.printTree"><code class="docutils literal notranslate"><span class="pre">RRDF.printTree()</span></code></a></li>
-</ul>
-</li>
 <li><a class="reference internal" href="#richrdf.RichRDF"><code class="docutils literal notranslate"><span class="pre">RichRDF()</span></code></a></li>
 <li><a class="reference internal" href="#richrdf.get_dependent_collection_names"><code class="docutils literal notranslate"><span class="pre">get_dependent_collection_names()</span></code></a></li>
 <li><a class="reference internal" href="#richrdf.get_include_path"><code class="docutils literal notranslate"><span class="pre">get_include_path()</span></code></a></li>
@@ -152,6 +138,126 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
 </section>
+<section id="module-richrdf.ReadEvent">
+<span id="richrdf-readevent-module"></span><h2>richrdf.ReadEvent module<a class="headerlink" href="#module-richrdf.ReadEvent" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.CollTypeInfo">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">richrdf.ReadEvent.</span></span><span class="sig-name descname"><span class="pre">CollTypeInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isSubColl</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">version</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#richrdf.ReadEvent.CollTypeInfo" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.CollTypeInfo.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#richrdf.ReadEvent.CollTypeInfo.id" title="Link to this definition"></a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.CollTypeInfo.isSubColl">
+<span class="sig-name descname"><span class="pre">isSubColl</span></span><a class="headerlink" href="#richrdf.ReadEvent.CollTypeInfo.isSubColl" title="Link to this definition"></a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.CollTypeInfo.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#richrdf.ReadEvent.CollTypeInfo.name" title="Link to this definition"></a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.CollTypeInfo.version">
+<span class="sig-name descname"><span class="pre">version</span></span><a class="headerlink" href="#richrdf.ReadEvent.CollTypeInfo.version" title="Link to this definition"></a></dt>
+<dd><p>Alias for field number 3</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.CollectionIDTable">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">richrdf.ReadEvent.</span></span><span class="sig-name descname"><span class="pre">CollectionIDTable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#richrdf.ReadEvent.CollectionIDTable" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.CollectionIDTable.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#richrdf.ReadEvent.CollectionIDTable.id" title="Link to this definition"></a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.CollectionIDTable.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#richrdf.ReadEvent.CollectionIDTable.name" title="Link to this definition"></a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.Event_Metadata">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">richrdf.ReadEvent.</span></span><span class="sig-name descname"><span class="pre">Event_Metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">branchNames</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#Event_Metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.Event_Metadata" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>EventMetadata</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.Event_Metadata.getBranchNames">
+<span class="sig-name descname"><span class="pre">getBranchNames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#Event_Metadata.getBranchNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.Event_Metadata.getBranchNames" title="Link to this definition"></a></dt>
+<dd><p>Get the names of all branches.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.Metadata">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">richrdf.ReadEvent.</span></span><span class="sig-name descname"><span class="pre">Metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">podio_metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#richrdf.ReadEvent.PODIO_Metadata" title="richrdf.ReadEvent.PODIO_Metadata"><span class="pre">PODIO_Metadata</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">events_Metadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#richrdf.ReadEvent.Event_Metadata" title="richrdf.ReadEvent.Event_Metadata"><span class="pre">Event_Metadata</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#Metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.Metadata" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.PODIO_Metadata">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">richrdf.ReadEvent.</span></span><span class="sig-name descname"><span class="pre">PODIO_Metadata</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coll_type_infos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">events_collIDTable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edm_defs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#PODIO_Metadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.PODIO_Metadata" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.PODIO_Metadata.getCollIDByName">
+<span class="sig-name descname"><span class="pre">getCollIDByName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#PODIO_Metadata.getCollIDByName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.PODIO_Metadata.getCollIDByName" title="Link to this definition"></a></dt>
+<dd><p>Get the ID of a collection by its name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.PODIO_Metadata.getCollNameByID">
+<span class="sig-name descname"><span class="pre">getCollNameByID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#PODIO_Metadata.getCollNameByID"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.PODIO_Metadata.getCollNameByID" title="Link to this definition"></a></dt>
+<dd><p>Get the name of a collection by its ID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.PODIO_Metadata.getCollNames">
+<span class="sig-name descname"><span class="pre">getCollNames</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#PODIO_Metadata.getCollNames"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.PODIO_Metadata.getCollNames" title="Link to this definition"></a></dt>
+<dd><p>Get the names of all collections.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.PODIO_Metadata.getCollTypeByID">
+<span class="sig-name descname"><span class="pre">getCollTypeByID</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#PODIO_Metadata.getCollTypeByID"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.PODIO_Metadata.getCollTypeByID" title="Link to this definition"></a></dt>
+<dd><p>Get the type of a collection by its ID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.PODIO_Metadata.getCollTypeByName">
+<span class="sig-name descname"><span class="pre">getCollTypeByName</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#PODIO_Metadata.getCollTypeByName"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.PODIO_Metadata.getCollTypeByName" title="Link to this definition"></a></dt>
+<dd><p>Get the type of a collection by its name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.PODIO_Metadata.getCollTypeInfos">
+<span class="sig-name descname"><span class="pre">getCollTypeInfos</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#PODIO_Metadata.getCollTypeInfos"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.PODIO_Metadata.getCollTypeInfos" title="Link to this definition"></a></dt>
+<dd><p>Get the collection type information.
+return array of CollTypeInfo().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="richrdf.ReadEvent.PODIO_Metadata.getEventCollIDTable">
+<span class="sig-name descname"><span class="pre">getEventCollIDTable</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/ReadEvent.html#PODIO_Metadata.getEventCollIDTable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.ReadEvent.PODIO_Metadata.getEventCollIDTable" title="Link to this definition"></a></dt>
+<dd><p>Get the collection type information.
+return array of CollectionIDTable().</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-richrdf.include">
 <span id="richrdf-include-module"></span><h2>richrdf.include module<a class="headerlink" href="#module-richrdf.include" title="Link to this heading"></a></h2>
 <section id="richrdf-include">
@@ -176,361 +282,6 @@ intellisense support.</p>
 </section>
 <section id="module-richrdf">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-richrdf" title="Link to this heading"></a></h2>
-<dl class="py class">
-<dt class="sig sig-object py" id="richrdf.RRDF">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">richrdf.</span></span><span class="sig-name descname"><span class="pre">RRDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context_holder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF" title="Link to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>A wrapper class around an RDataFrame backend providing a fluent Python interface.</p>
-<p>The <cite>RRDF</cite> class is the core abstraction returned by <cite>RichRDF</cite>. It mimics the ROOT RDataFrame
-interface while adding evaluation context handling and convenient utility methods. Methods such as
-<cite>Define</cite>, <cite>Filter</cite>, <cite>Aggregate</cite>, <cite>Evaluate</cite>, and <cite>AsNumpy</cite> allow chaining and lazy/instant actions.</p>
-<p>This wrapper tracks evaluation context, and metadata.
-when passed a parent RRDF object, enabling rich evaluation features and metadata-aware operations.</p>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">RichRDF</span><span class="p">(</span><span class="s2">&quot;events.root&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Define</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;x + 1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">Filter</span><span class="p">(</span><span class="s2">&quot;x &gt; 5&quot;</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">Display</span><span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Aggregate">
-<span class="sig-name descname"><span class="pre">Aggregate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Aggregate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Aggregate" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Alias">
-<span class="sig-name descname"><span class="pre">Alias</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Alias"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Alias" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.AsNumpy">
-<span class="sig-name descname"><span class="pre">AsNumpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.AsNumpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.AsNumpy" title="Link to this definition"></a></dt>
-<dd><p>This method behaves similarly to <cite>AsNumpy()</cite> in ROOT’s RDataFrame.
-It triggers immediate evaluation and returns the result as a NumPy-compatible
-structure (typically a dict of arrays).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.AsNumpy_">
-<span class="sig-name descname"><span class="pre">AsNumpy_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.AsNumpy_"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.AsNumpy_" title="Link to this definition"></a></dt>
-<dd><p>Unlike <cite>AsNumpy()</cite>, this method does not immediately evaluate the result.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Book">
-<span class="sig-name descname"><span class="pre">Book</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Book"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Book" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Cache">
-<span class="sig-name descname"><span class="pre">Cache</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Cache" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Count">
-<span class="sig-name descname"><span class="pre">Count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Count" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Define">
-<span class="sig-name descname"><span class="pre">Define</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Define"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Define" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.DefinePerSample">
-<span class="sig-name descname"><span class="pre">DefinePerSample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.DefinePerSample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.DefinePerSample" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.DefineSlot">
-<span class="sig-name descname"><span class="pre">DefineSlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.DefineSlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.DefineSlot" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Display">
-<span class="sig-name descname"><span class="pre">Display</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Display"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Display" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Exposure">
-<span class="sig-name descname"><span class="pre">Exposure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varible</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Exposure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Exposure" title="Link to this definition"></a></dt>
-<dd><p>Expose member fields of a compound variable as top-level DataFrame columns.</p>
-<p>This method defines new columns using the member fields of a compound variable.
-Unlike <cite>Extract</cite>, which uses <cite>varible_member</cite> naming, this exposes members directly
-as columns named after the member itself.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>varible</strong> (<em>str</em>) – The name of the compound variable (e.g., <cite>hit</cite>).</p></li>
-<li><p><strong>members</strong> (<em>list</em><em> of </em><em>str</em>) – The list of member field names to expose (e.g., <cite>[“x”, “y”, “z”]</cite>).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new RRDF instance with the member fields exposed as top-level columns.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#richrdf.RRDF" title="richrdf.RRDF">RRDF</a></p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Exposure</span><span class="p">(</span><span class="s2">&quot;hit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">])</span>
-<span class="go"># Defines columns: x, y, z (instead of hit_x, hit_y, hit_z)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Extract">
-<span class="sig-name descname"><span class="pre">Extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">varible</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">members</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Extract" title="Link to this definition"></a></dt>
-<dd><p>This method defines new columns in the DataFrame by accessing individual members
-of a compound object (e.g., a struct or class with attributes).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>varible</strong> (<em>str</em>) – The name of the compound variable in the DataFrame (e.g., a collection element like <cite>hit</cite>).</p></li>
-<li><p><strong>members</strong> (<em>list</em><em> of </em><em>str</em>) – The list of member field names to extract (e.g., <cite>[“x”, “y”, “z”]</cite>).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new RRDF instance with the member fields defined as separate columns.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#richrdf.RRDF" title="richrdf.RRDF">RRDF</a></p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Extract</span><span class="p">(</span><span class="s2">&quot;hit&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">])</span>
-<span class="go"># Defines columns: hit_x, hit_y, hit_z as hit.x, hit.y, hit.z respectively.</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Fill">
-<span class="sig-name descname"><span class="pre">Fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Fill"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Fill" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Filter">
-<span class="sig-name descname"><span class="pre">Filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Filter" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Graph">
-<span class="sig-name descname"><span class="pre">Graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Graph" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.GraphAsymmErrors">
-<span class="sig-name descname"><span class="pre">GraphAsymmErrors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.GraphAsymmErrors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.GraphAsymmErrors" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Histo1D">
-<span class="sig-name descname"><span class="pre">Histo1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Histo1D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Histo1D" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Histo2D">
-<span class="sig-name descname"><span class="pre">Histo2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Histo2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Histo2D" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Histo3D">
-<span class="sig-name descname"><span class="pre">Histo3D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Histo3D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Histo3D" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.HistoND">
-<span class="sig-name descname"><span class="pre">HistoND</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.HistoND"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.HistoND" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Max">
-<span class="sig-name descname"><span class="pre">Max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Max" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Mean">
-<span class="sig-name descname"><span class="pre">Mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Mean" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Min">
-<span class="sig-name descname"><span class="pre">Min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Min" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Profile1D">
-<span class="sig-name descname"><span class="pre">Profile1D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Profile1D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Profile1D" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Profile2D">
-<span class="sig-name descname"><span class="pre">Profile2D</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Profile2D"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Profile2D" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Range">
-<span class="sig-name descname"><span class="pre">Range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Range" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.ReadEvent">
-<span class="sig-name descname"><span class="pre">ReadEvent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">eventName</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">printGeneratedCode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">throwExceptionOnRefCollIDNotFound</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.ReadEvent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.ReadEvent" title="Link to this definition"></a></dt>
-<dd><p>Read an event from the underlying data source, extracting specified collections.</p>
-<p>This will define an <cite>“event”</cite> column in the DataFrame that includes the requested collections.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>eventName</strong> (<em>str</em>) – The name of the event column to define in the DataFrame.</p></li>
-<li><p><strong>collections</strong> (<em>list</em><em> of </em><em>str</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – List of collection names to read, e.g., <cite>[“MCParticles”, “PandoraPFOs”]</cite>.
-If None, all collections will be loaded.</p></li>
-<li><p><strong>printGeneratedCode</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to print the C++ code generated by this operation.</p></li>
-<li><p><strong>throwExceptionOnRefCollIDNotFound</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, raises an exception when a collection refers to another that has not been loaded.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A new RRDF with the specified event column registered.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#richrdf.RRDF" title="richrdf.RRDF">RRDF</a></p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ReadEvent</span><span class="p">(</span><span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;MCParticles&quot;</span><span class="p">,</span> <span class="s2">&quot;PandoraPFOs&quot;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ReadEvent</span><span class="p">(</span><span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ReadEvent</span><span class="p">(</span><span class="s2">&quot;event&quot;</span><span class="p">)</span>  <span class="c1"># equivalent to loading all collections</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ReadEvent</span><span class="p">(</span><span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;MCParticles&quot;</span><span class="p">,</span> <span class="s2">&quot;PandoraPFOs&quot;</span><span class="p">],</span> <span class="n">throwExceptionOnRefCollIDNotFound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<p class="rubric">Notes</p>
-<p>Elements in <cite>PandoraPFOs</cite> are typically of type <cite>edm4hep::ReconstructedParticle</cite>, which has four
-associated relations: <cite>clusters</cite>, <cite>tracks</cite>, <cite>particles</cite>, and <cite>vertex</cite>.</p>
-<p>By default, <cite>ReadEvent</cite> does <strong>not</strong> load these related collections unless you explicitly specify
-them. If you omit them, you can still call <cite>auto clusters = rec.getClusters();</cite>, but this returns
-an array of <strong>empty clusters</strong> (not an empty array). As a result, <cite>rec.getClusters()[…].isValid()</cite>
-returns <cite>False</cite>. If you then try <cite>rec.getClusters()[…].getEnergy()</cite>, your program will almost
-certainly crash.</p>
-<p>This is because <cite>podio</cite> is designed <strong>not to throw exceptions</strong>, even for invalid access.</p>
-<p>Due to limitations in <cite>RDataFrame</cite>, related collections like <cite>clusters</cite> cannot be added automatically.
-You must specify them manually. Enabling <cite>throwExceptionOnRefCollIDNotFound</cite> helps identify such
-missing references:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ReadEvent</span><span class="p">(</span><span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="p">[</span><span class="s2">&quot;MCParticles&quot;</span><span class="p">,</span> <span class="s2">&quot;PandoraPFOs&quot;</span><span class="p">],</span> <span class="n">throwExceptionOnRefCollIDNotFound</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>This causes the program to throw <strong>at runtime</strong> (when looping over events), not during registration,
-because collection dependencies require actual data inspection and are not detectable from metadata alone.</p>
-<p>If <cite>collections</cite> is set to <cite>None</cite>, all collections will be read:</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">ReadEvent</span><span class="p">(</span><span class="s2">&quot;event&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</pre></div>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Redefine">
-<span class="sig-name descname"><span class="pre">Redefine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Redefine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Redefine" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.RedefinePerSample">
-<span class="sig-name descname"><span class="pre">RedefinePerSample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.RedefinePerSample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.RedefinePerSample" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.RedefineSlot">
-<span class="sig-name descname"><span class="pre">RedefineSlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.RedefineSlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.RedefineSlot" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Reduce">
-<span class="sig-name descname"><span class="pre">Reduce</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Reduce"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Reduce" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Report">
-<span class="sig-name descname"><span class="pre">Report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Report" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Stats">
-<span class="sig-name descname"><span class="pre">Stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Stats" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.StdDev">
-<span class="sig-name descname"><span class="pre">StdDev</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.StdDev"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.StdDev" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Sum">
-<span class="sig-name descname"><span class="pre">Sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Sum" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="richrdf.RRDF.Take">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Take</span></span><a class="headerlink" href="#richrdf.RRDF.Take" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.Vary">
-<span class="sig-name descname"><span class="pre">Vary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.Vary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.Vary" title="Link to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.getBackend">
-<span class="sig-name descname"><span class="pre">getBackend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.getBackend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.getBackend" title="Link to this definition"></a></dt>
-<dd><p>Return the underlying backend used by this RRDF instance.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The internal backend object (typically an RDataFrame or similar).</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Any</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.getMetadata">
-<span class="sig-name descname"><span class="pre">getMetadata</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">PODIO_Metadata</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.getMetadata"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.getMetadata" title="Link to this definition"></a></dt>
-<dd><p>Retrieve PODIO metadata if available.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The metadata object if present, otherwise None.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>PODIO_Metadata or None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="richrdf.RRDF.printTree">
-<span class="sig-name descname"><span class="pre">printTree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">indent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RRDF.printTree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RRDF.printTree" title="Link to this definition"></a></dt>
-<dd><p>Print the structure of this RRDF instance, including backend nesting.
-This is a diagnostic method for visualizing the composition of RRDF wrappers.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>indent</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of spaces to indent the current level (used for recursion).</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>This method prints directly to stdout.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">printTree</span><span class="p">()</span>
-<span class="go">this is RDF</span>
-<span class="go">    this is RDataFrame</span>
-</pre></div>
-</div>
-</dd></dl>
-
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="richrdf.RichRDF">
 <span class="sig-prename descclassname"><span class="pre">richrdf.</span></span><span class="sig-name descname"><span class="pre">RichRDF</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">kargs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">readMetadata</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">RDataFrame</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/richrdf/RichRDF.html#RichRDF"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#richrdf.RichRDF" title="Link to this definition"></a></dt>
@@ -550,7 +301,7 @@ and PODIO metadata. It provides enhanced features via the <cite>RRDF</cite> inte
 <dd class="field-even"><p>A wrapped ROOT RDataFrame instance with evaluation and optional metadata context.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#richrdf.RRDF" title="richrdf.RRDF">RRDF</a></p>
+<dd class="field-odd"><p>RRDF</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>

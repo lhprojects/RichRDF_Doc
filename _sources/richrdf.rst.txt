@@ -12,6 +12,14 @@ Subpackages
 Submodules
 ----------
 
+richrdf.ReadEvent module
+------------------------
+
+.. automodule:: richrdf.ReadEvent
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 richrdf.include module
 ----------------------
 
